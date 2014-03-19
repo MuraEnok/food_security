@@ -1,0 +1,17 @@
+{
+    "contents" : "# Food Insecurity map US counties from USDA.  Fast way to view maps of data to visually reconize what is occurring.\n# this is easy way to create maps using ggplot2\nlibrary(choroplethr)\nlibrary(gridExtra)\nlibrary(ggplot2)\n\n#download the file directly \n(\"http://thedataweb.rm.census.gov/pub/cps/supps/dec12pub.dat.gz\", mode=\"wb\")\n# data found http://www.ers.usda.gov/datafiles/Food_Environment_Atlas/Data_Access_and_Documentation_Downloads/Current_Version/DataDownload.xls\n# excel file saved as csv files, one for each tab and in data folder\nlocal = \"data/food/\"\n\nloc = dir(local)\nloc\n# here is what the dir should show but if it doesn't choose your number to run map.  Look up the key using var.list\n# [1] \"Access.csv\"                   [2]\"Assistance.csv\"               [3]  \"Health.csv\"                    \n# [4] \"Insecurity.csv\"               [5] \"Local.csv\"                   [6]   \"Prices_taxes.csv\"              \n# [7] \"Restaurants.csv\"              [8]  \"Socioeconomic.csv\"          [9]   \"Stores.csv\"                    \n# [10] \"Supplemental Data - County.csv\" [11] \"Supplemental Data - State.csv\"  [12] \"Variable_List.csv\" \n\n# choose a number to get the file [ place num here]\nfile.name = loc[5]\n\nname = paste0(local, file.name, sep=\"\")\nfile <- read.csv(name, sep=\",\", as.is=TRUE, header=TRUE)\n\n# get the variables to list and specific category to map\nvl = paste0(local, loc[12], sep=\"\")\nvar.list <- read.csv(vl, sep=\",\", as.is=TRUE, header=TRUE)                      \nvar.list = subset(var.list, Category.Code == toupper(gsub(\".csv\", '', file.name)))\nVar.Code = as.list(paste( var.list$Variable.Code))\n\n# This prints out as view.code the list of categories available to map \nView.Code = as.list(paste( var.list$Variable.Name))\nView.Code\n# stop here and view what sub dataset you like\n\n# place the number of field to map for category and place in [X] this uses this group to create map\nnum = 8\nVar.Code = as.character(Var.Code[7])\ntitle.map = paste(View.Code[7], sep='')\n# place the df to map here\ndf = file\n# grab the variable from \ndf = df[, c(Var.Code, \"FIPS\")]\nnames(df) = c(\"value\", \"region\")\n\nchoroplethr(df, \"county\", title=title.map)\n\n# Create map using choroplethr function\nfarm = choroplethr(df, \"county\", title=title.map, states=inland_nw)\n\nper_cap = choroplethr(income, \"county\", title=\"Farm Income 2012\")\n\n\ngrid.arrange(farm, per_cap, nrow=1, ncol=2)\n\n\n\n",
+    "created" : 1395162935454.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "226940785",
+    "id" : "337EDABB",
+    "lastKnownWriteTime" : 1395164913,
+    "path" : "~/Dev/r/gist/food security/Food Atlas download.R",
+    "project_path" : "Food Atlas download.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

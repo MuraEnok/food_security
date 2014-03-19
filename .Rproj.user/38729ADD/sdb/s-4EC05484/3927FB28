@@ -1,0 +1,17 @@
+{
+    "contents" : "library(choroplethr)\nlibrary(gridExtra)\nlibrary(ggplot2)\n\n\n# get bear facts files into a datatable for all counties\n# https://www.bea.gov/regional/downloadzip.cfm\nloc = dir(\"/Users/ak/Data/BEA/CA04/\", pattern=\".csv\")\n# remove strange files Use for CA04 not other folders\nloc = loc[- c(1, 7,  13, 23,  26, 30, 44, 50)]\n# get all the BEA local files and put into a directory called data 2 choices CA04 and CA91\nbase <- \"/Users/ak/Data/BEA/CA04/\" \nfiles <- lapply(loc, function(.state){ \n  cat(.state, \"\\n\") \n  input <- read.csv(paste0(base, .state)\n                    , sep=\",\"\n                    , header=FALSE\n                    , as.is=TRUE\n  )\n  \n  \n  input\n})\n# this creates the data table for the set\nCA04 <- do.call(rbind, files)\n\n\n\nx <- names(read.csv(paste0(base, loc[3]), sep=\",\", header=TRUE, as.is=TRUE))\nnames(CA04) <- x\ndf <- CA04[-1,]\nrm(x)\nrm(files)\n\ntrim.leading <- function (x)  sub(\"^\\\\s+\", \"\", x)\ndf$LineTitle <- trim.leading(df$LineTitle)\n\n# get categories to map \ncat.var = paste(unique(df$LineTitle))\ncat.var\n# get year\ncat.year = paste(names(df)[8:length(names(df))])\ncat.view = paste(seq(8:length(names(df))),names(df)[8:length(names(df))], sep=\" : \")\ncat.view \n################################################################################################\n# view the choices in the Console of what groups you would like to map\n# put choices below\ncat = 3            # Put the index for category titles here see console for choices\n# Place index number here for year\nyr = 44             # put the year from cat.year view in index <-\n\n\n# use the index to subset the mapping category and grab title\nline = paste(cat.var[cat])\ntitle.var = paste(line)\n\n# subset dataset based on year and category\ncat.year = paste(cat.year[yr])\ndf <- subset(df, LineTitle == line)[, c(\"FIPS\", cat.year )]\n\ndf$region <- as.numeric(df$FIPS)\ndf$value <-  as.numeric(df[,2])\n\n# subset for a region\ninland_nw = c(\"WA\", \"OR\", \"ID\", \"MT\", \"WY\")\n#this creates map\nfarm_income <- choroplethr(df, \"county\", title= title.var, states= inland_nw, num_buckets=8)\n\n# for comparison maps use code below. \n# grid.arrange(inflow, outflow, nrow=1, ncol=2)\n# outflow <- choroplethr(df, \"county\", title= title.var)\n# inflow <- choroplethr(df, \"county\", title= title.var)\n\n\n",
+    "created" : 1395197487409.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3533918853",
+    "id" : "3927FB28",
+    "lastKnownWriteTime" : 1395197514,
+    "path" : "~/Dev/r/gist/food security/BEA Map Tool Farm Income.R",
+    "project_path" : "BEA Map Tool Farm Income.R",
+    "properties" : {
+        "tempName" : "Untitled2"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

@@ -1,0 +1,9 @@
+{
+    "path" : "~/Data/usgsd/usgsd/Youth Risk Behavior Surveillance System",
+    "sortOrder" : [
+        {
+            "ascending" : true,
+            "columnIndex" : 2
+        }
+    ]
+}
