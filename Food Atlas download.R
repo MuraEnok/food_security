@@ -3,9 +3,9 @@
 library(choroplethr)
 library(gridExtra)
 library(ggplot2)
-library(downloader)
+
 #download the file directly 
-download("http://thedataweb.rm.census.gov/pub/cps/supps/dec12pub.dat.gz", mode="wb")
+("http://thedataweb.rm.census.gov/pub/cps/supps/dec12pub.dat.gz", mode="wb")
 # data found http://www.ers.usda.gov/datafiles/Food_Environment_Atlas/Data_Access_and_Documentation_Downloads/Current_Version/DataDownload.xls
 # excel file saved as csv files, one for each tab and in data folder
 local = "data/food/"
