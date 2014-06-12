@@ -14,14 +14,14 @@ loc
 # [10] "Supplemental Data - County.csv" [11] "Supplemental Data - State.csv"  [12] "Variable_List.csv" 
 
 # choose a number to get the file [ place num here]
-file.name = loc[5]
+file.name = loc[6]
 
 base = "Data/food/"
 name = paste0(base, file.name, sep="")
 file <- read.csv(name, sep=",", as.is=TRUE, header=TRUE)
 
 # get the variables to list and specific category to map
-vl = paste0(base, loc[12], sep="")
+vl = paste0(base, loc[3], sep="")
 var.list <- read.csv(vl, sep=",", as.is=TRUE, header=TRUE)                      
 var.list = subset(var.list, Category.Code == toupper(gsub(".csv", '', file.name)))
 Var.Code = as.list(paste( var.list$Variable.Code))
